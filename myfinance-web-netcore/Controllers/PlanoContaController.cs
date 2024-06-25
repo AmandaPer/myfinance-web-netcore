@@ -25,32 +25,30 @@ public class PlanoContaController : Controller
 
     public IActionResult Index()
     {
-        var lista = _planoContaService.ListaRegistros();
+        var lista = _planoContaService.ListarRegistros();
         ViewBag.ListaPlanoConta = lista;
         return View();
     }
 
     [HttpPost]
-    [Route("Cadastro")]
-
-    public IActionResult Cadastro(PlanoContaModel model)
-    {
-        _planoContaService.Salvar(model);
-        return View();
-    }
-
     [HttpGet]
     [Route("Cadastro")]
     [Route("Cadastro/{id}")]
 
-    public IActionResult Cadastro(int? id)
+    public IActionResult Cadastro(PlanoContaModel? model, int? id)
     {
         if(id!= null){
             var registro = _planoContaService.RetornarRegistro((int) id);
             return View(registro);
         }
-        
-        return View();
+        else if (model != null && ModelState.IsValid)
+        {
+            _planoContaService.Salvar(model);
+            return RedirectToAction("Cadastro");
+        }
+        else{
+            return View();
+        }      
     }
 
     [HttpGet]
@@ -59,7 +57,7 @@ public class PlanoContaController : Controller
     public IActionResult Excluir(int id)
     {
         _planoContaService.Excluir(id);
-        return RedirectToAction("index");
+        return RedirectToAction("Index");
     }
 
 }

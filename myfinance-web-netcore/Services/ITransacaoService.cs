@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using myfinance_web_netcore.Models;
 
 namespace myfinance_web_netcore.Services
 {
-    public interface IPlanoContaService
+    public interface ITransacaoService
     {
-        List<PlanoContaModel> ListaRegistros();
+        List<TransacaoModel> ListarRegistros();
         
-        void Salvar(PlanoContaModel model);
+        void Salvar(TransacaoModel model);
 
         void Excluir(int id);
 
-        PlanoContaModel RetornarRegistro(int id);
+        TransacaoModel RetornarRegistro(int id);
     }
 }

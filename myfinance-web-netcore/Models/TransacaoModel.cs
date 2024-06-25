@@ -6,7 +6,7 @@ namespace myfinance_web_netcore.Models
     public class TransacaoModel
     {
  
-        public int Id {get; set;}
+        public int? Id {get; set;}
 
         public string? Historico {get; set;}
 
@@ -16,7 +16,7 @@ namespace myfinance_web_netcore.Models
 
         public int PlanoContaId {get; set;}
 
-        public PlanoContaModel ItemPlanoConta {get; set;}
+        public PlanoContaModel? ItemPlanoConta {get; set;}
 
         public IEnumerable<SelectListItem>? PlanoContas {get; set;}
 

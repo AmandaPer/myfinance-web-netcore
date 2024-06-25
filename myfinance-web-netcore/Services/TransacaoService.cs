@@ -1,17 +1,18 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using myfinance_web_dotnet.Infrastructure;
 using myfinance_web_netcore.Domain;
 using myfinance_web_netcore.Models;
 
 namespace myfinance_web_netcore.Services
 {
-    public class PlanoContaService : IPlanoContaService
+    public class TransacaoService : ITransacaoService
     {
 
         private readonly IMapper _mapper;
         private readonly MyFinanceDbContext _myFinanceDbContext;
 
-        public PlanoContaService(
+        public TransacaoService(
             MyFinanceDbContext myFinanceDbContext,
             IMapper mapper)
     {
@@ -21,30 +22,30 @@ namespace myfinance_web_netcore.Services
 
         public void Excluir(int id)
         {
-            var item = _myFinanceDbContext.PlanoConta.Where(x => x.Id == id).First();
+            var item = _myFinanceDbContext.Transacao.Where(x => x.Id == id).First();
             _myFinanceDbContext.Attach(item);
             _myFinanceDbContext.Remove(item);
             _myFinanceDbContext.SaveChanges();
         }
 
-        public List<PlanoContaModel> ListarRegistros()
+        public List<TransacaoModel> ListarRegistros()
         {
-            var listaPlanoConta = _myFinanceDbContext.PlanoConta.ToList();
-            var lista = _mapper.Map<List<PlanoContaModel>>(listaPlanoConta);
+            var listaTransacao = _myFinanceDbContext.Transacao.Include(x => x.PlanoConta).ToList();
+            var lista = _mapper.Map<List<TransacaoModel>>(listaTransacao);
             return lista;
         }
 
-        public PlanoContaModel RetornarRegistro(int id)
+        public TransacaoModel RetornarRegistro(int id)
         {
-            var item = _myFinanceDbContext.PlanoConta.Where(x => x.Id == id).First();
-            var registro = _mapper.Map<PlanoContaModel>(item);
+            var item = _myFinanceDbContext.Transacao.Where(x => x.Id == id).First();
+            var registro = _mapper.Map<TransacaoModel>(item);
             return registro;
         }
 
-        public void Salvar(PlanoContaModel model)
+        public void Salvar(TransacaoModel model)
         {
-            var dbSet = _myFinanceDbContext.PlanoConta;
-            var item = _mapper.Map<PlanoConta>(model);
+            var dbSet = _myFinanceDbContext.Transacao;
+            var item = _mapper.Map<Transacao>(model);
 
             if(item.Id ==0)
             {
